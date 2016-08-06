@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: vyVb0JwTpdTVMop66Gdm3SikmLNfRs4WR5pimt4fT4srYB0Anw501zNsCh2O1GcVyCspWm+XWs1Ss9xy8YCxSKX4mb5AV/orJXrcFoU5nZqk2NuxbPjWSGdoaGdbaMc++uhH/Re8YpHU7kss/mtzc3oaRF7CV/QvdMYl9coWzvmOmKRdMJnLf55dLMk5T6Cu34/lZhsiVwOwVZqb3dsGTOnglUkT4ZoNuJkXQ/j9CgOrGbNO/E/gpv5Bbr/ow6W+HMogtOibrHt2VaVB6wvgtD/3GqruTEVNgqimV2MXOVHVPd66nULPjFYTLR/wvxS9CFOhv3VQO4hWvLv3vnyOvJojWJs5rVgy5Rg7SyBPZ51YQuUHTVqiFzg6Jtynp13hrcj12+nKxUVyukItYTe2zUTLPYmHVkQA+kJt9QdEvLfI+hP8h7T2kztFDwWhdjkvvZZPLp/hQCK660RS2MxDHqAIIBpLx9dsKbGZFAqNcrhcUdg47Hq6M1/RKg0bgs/qEolPQ9vZtJsG6H8rRhgOsBUz4e1MdiaDtM62XmqXu8ZPFNLbXRpnrw08TAq9BJRfH+mUaoEatXuNzSRRVcc6h4haPD7BQff4VY9Ho7cMRe87z/1GWvccIKUV+J/f80+fBZi2Ks2KcDTavaWkJKhJPMEj57z/iLUoPSEswXnBItA=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/Glaucus-Or-The-Wonders-of-the-Shore_695
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
