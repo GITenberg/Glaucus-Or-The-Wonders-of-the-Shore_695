@@ -1,5 +1,5 @@
 _repo: Glaucus-Or-The-Wonders-of-the-Shore_695
-_version: 0.2.0
+_version: 0.2.1
 covers:
 - cover_type: archival
   image_path: 695-h/images/coverb.jpg
@@ -30,5 +30,6 @@ subjects:
 - !lcsh 'Seashore biology -- Juvenile literature'
 - !lcc 'QH'
 - !lcsh 'Natural history -- Juvenile literature'
+- GITenberg
 title: Glaucus; Or, The Wonders of the Shore
 url: http://www.gutenberg.org/ebooks/695
